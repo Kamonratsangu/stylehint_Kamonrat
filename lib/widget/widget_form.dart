@@ -9,6 +9,8 @@ class WidgetForm extends StatelessWidget {
     this.textInputType,
     this.obsecu,
     this.suffixWidget,
+    this.prefixWidget,
+    this.marginTop,
   }) : super(key: key);
 
   final String label;
@@ -16,13 +18,16 @@ class WidgetForm extends StatelessWidget {
   final TextInputType? textInputType;
   final bool? obsecu;
   final Widget? suffixWidget;
+  final Widget? prefixWidget;
+  final double? marginTop;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Colors.grey.shade300),
       width: 250,
       height: 40,
-      margin: const EdgeInsets.only(top: 16),
+      margin: EdgeInsets.only(top: marginTop ?? 16),
       child: TextFormField(
         obscureText: obsecu ?? false,
         keyboardType: textInputType,
@@ -30,9 +35,11 @@ class WidgetForm extends StatelessWidget {
         decoration: InputDecoration(
           contentPadding:
               const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          border: const OutlineInputBorder(), suffixIcon: suffixWidget,
+          border: InputBorder.none,
+          suffixIcon: suffixWidget,
+          prefixIcon: prefixWidget,
           labelText: label,
-          
+          // filled: true,
         ),
       ),
     );

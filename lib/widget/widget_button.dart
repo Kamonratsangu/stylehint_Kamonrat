@@ -18,8 +18,9 @@ class WidgetButton extends StatelessWidget {
       onPressed: pressFunc,
       child: WidgetText(data: label),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.black,
         foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))
       ),
     );
   }

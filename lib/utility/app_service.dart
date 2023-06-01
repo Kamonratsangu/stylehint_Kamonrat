@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutterstylehint/model/announc_model.dart';
+import 'package:flutterstylehint/model/catigory_model.dart';
+import 'package:flutterstylehint/model/demo_model.dart';
 import 'package:flutterstylehint/model/user_model.dart';
 import 'package:flutterstylehint/utility/app_controller.dart';
 import 'package:get/get.dart';
@@ -15,6 +18,58 @@ import '../model/post_model.dart';
 class AppService {
   AppController appController = Get.put(AppController());
 
+  Future<void> readCatigory() async {
+    if (appController.catigoryModels.isNotEmpty) {
+      appController.catigoryModels.clear();
+    }
+
+    FirebaseFirestore.instance.collection('category').get().then((value) {
+      for (var element in value.docs) {
+        CatigoryModel catigoryModel = CatigoryModel.fromMap(element.data());
+        appController.catigoryModels.add(catigoryModel);
+      }
+    });
+  }
+
+  Future<void> readAllAnnouncModel() async {
+    if (appController.announceModels.isNotEmpty) {
+      appController.announceModels.clear();
+    }
+
+    FirebaseFirestore.instance.collection('announcement').get().then((value) {
+      for (var element in value.docs) {
+        AnnouncModel announcModel = AnnouncModel.fromMap(element.data());
+        appController.announceModels.add(announcModel);
+      }
+    });
+  }
+
+  Future<void> readDemoModel() async {
+    if (appController.demoModels.isNotEmpty) {
+      appController.demoModels.clear();
+    }
+
+    FirebaseFirestore.instance.collection('demo').get().then((value) {
+      for (var element in value.docs) {
+        DemoModel demoModel = DemoModel.fromMap(element.data());
+        appController.demoModels.add(demoModel);
+      }
+    });
+  }
+
+  Future<void> readDiscoverModel() async {
+    if (appController.discoverModels.isNotEmpty) {
+      appController.discoverModels.clear();
+    }
+
+    FirebaseFirestore.instance.collection('discover').get().then((value) {
+      for (var element in value.docs) {
+        DemoModel model = DemoModel.fromMap(element.data());
+        appController.discoverModels.add(model);
+      }
+    });
+  }
+
   Future<void> readPostForDiscover() async {
     if (appController.discoverPostModels.isNotEmpty) {
       appController.discoverPostModels.clear();
@@ -26,9 +81,7 @@ class AppService {
         .get()
         .then((value) async {
       for (var element in value.docs) {
-
-UserModel userModel = UserModel.fromMap(element.data());
-
+        UserModel userModel = UserModel.fromMap(element.data());
 
         await FirebaseFirestore.instance
             .collection('user')
@@ -36,14 +89,14 @@ UserModel userModel = UserModel.fromMap(element.data());
             .collection('post')
             .get()
             .then((value) {
-              if (value.docs.isNotEmpty) {
-                for (var element in value.docs) {
-                  PostModel postModel = PostModel.fromMap(element.data());
-                  appController.discoverPostModels.add(postModel);
-                  appController.discoverUserModels.add(userModel);
-                }
-              }
-            });
+          if (value.docs.isNotEmpty) {
+            for (var element in value.docs) {
+              PostModel postModel = PostModel.fromMap(element.data());
+              appController.discoverPostModels.add(postModel);
+              appController.discoverUserModels.add(userModel);
+            }
+          }
+        });
       }
     });
   }

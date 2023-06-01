@@ -6,8 +6,10 @@ import 'package:flutterstylehint/bodys/post_body.dart';
 import 'package:flutterstylehint/bodys/profile_body.dart';
 import 'package:flutterstylehint/states/authen.dart';
 import 'package:flutterstylehint/states/create_new_account.dart';
+import 'package:flutterstylehint/states/loginpage.dart';
 import 'package:flutterstylehint/utility/app_controller.dart';
 import 'package:flutterstylehint/utility/app_dialoge.dart';
+import 'package:flutterstylehint/widget/widget_image.dart';
 import 'package:flutterstylehint/widget/widget_text_button.dart';
 import 'package:get/get.dart';
 
@@ -26,6 +28,22 @@ class _MainHomeState extends State<MainHome> {
     'Notification',
     'Profile',
   ];
+
+  var paths = <String>[
+    'images/batman.png',
+    'images/batman.png',
+    'images/batman.png',
+    'images/batman.png',
+    'images/batman.png',
+  ];
+  var pathsActive = <String>[
+    'images/account.png',
+    'images/account.png',
+    'images/account.png',
+    'images/account.png',
+    'images/account.png',
+  ];
+
   var iconDatas = <IconData>[
     Icons.home,
     Icons.search,
@@ -50,7 +68,13 @@ class _MainHomeState extends State<MainHome> {
 
     for (var i = 0; i < titles.length; i++) {
       items.add(
-        BottomNavigationBarItem(icon: Icon(iconDatas[i]), label: titles[i]),
+        BottomNavigationBarItem(
+          icon: WidgetImage(
+            path: paths[i],size: 24,
+          ),
+          activeIcon: WidgetImage(path: pathsActive[i],size: 24,),
+          label: titles[i],
+        ),
       );
     }
   }
@@ -69,32 +93,43 @@ class _MainHomeState extends State<MainHome> {
               selectedItemColor: Colors.blue,
               type: BottomNavigationBarType.fixed,
               onTap: (value) {
-                if (value == 2 || value == 3 || value == 4) {
+                if (value == 2) {
+                  //Post
                   if (appController.currentUserModels.isEmpty) {
-                    // Guest
-                    print('Guest');
-                    AppDialog(context: context).normalDialog(
-                        title: 'Login ?',
-                        firstAction: WidgetTextButton(
-                          label: 'Create Account',
-                          pressFunc: () {
-                            Get.back();
-                            Get.to(const CreatenewAccount());
-                          },
-                        ),
-                        secondAction: WidgetTextButton(
-                          label: 'Login',
-                          pressFunc: () {
-                            Get.back();
-                            Get.to(const Authen());
-                          },
-                        ));
+                    Get.offAll(const LoginPage());
                   } else {
                     appController.indexBody.value = value;
                   }
                 } else {
                   appController.indexBody.value = value;
                 }
+
+                // if (value == 2 || value == 3 || value == 4) {
+                //   if (appController.currentUserModels.isEmpty) {
+                //     // Guest
+                //     print('Guest');
+                //     AppDialog(context: context).normalDialog(
+                //         title: 'Login ?',
+                //         firstAction: WidgetTextButton(
+                //           label: 'Create Account',
+                //           pressFunc: () {
+                //             Get.back();
+                //             Get.to(const CreatenewAccount());
+                //           },
+                //         ),
+                //         secondAction: WidgetTextButton(
+                //           label: 'Login',
+                //           pressFunc: () {
+                //             Get.back();
+                //             Get.to(const Authen());
+                //           },
+                //         ));
+                //   } else {
+                //     appController.indexBody.value = value;
+                //   }
+                // } else {
+                //   appController.indexBody.value = value;
+                // }
               },
               currentIndex: appController.indexBody.value,
             ),
